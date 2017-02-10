@@ -6,7 +6,7 @@
 /* product.h
 * Authors: Adam Waggoner, Jaden Holladay
 *
-* Represents a food product with a UPC, _Name, and lifespan.	
+* Represents a food product with a UPC, _Name, and lifespan.
 */
 
 struct Product

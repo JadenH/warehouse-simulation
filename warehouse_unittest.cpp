@@ -7,7 +7,8 @@
 // ##################### STEP 1 ##################
 // Include the necessary header files for testing
 
-#include "warehouse.h"
+#include "Warehouse.h"
+#include "Shipment.h"
 #include "gtest/gtest.h"
 
 #include <iostream>
@@ -18,9 +19,23 @@
 // +++++++++++++++++++ Test Constructors ++++++++++++++++++++++++++
 
 TEST(Test_Constructor, Properly_Assigns_Name) {
-  warehouse some_warehouse("Utah");
+  Warehouse some_warehouse("Utah");
 
   EXPECT_EQ("Utah", some_warehouse.Name);
+}
+
+// +++++++++++++++++++ Test Functionality ++++++++++++++++++++++++++
+
+TEST(Test_Constructor, Add_Shipment) {
+  Warehouse some_warehouse("Utah");
+  Shipment s(5, 10);
+  some_warehouse.ReceiveShipment(000000, s);
+
+  std::deque<Shipment> shipments = some_warehouse.Get_Inventory(000000);
+
+  EXPECT_EQ(1, shipments.size());
+  EXPECT_EQ(5, shipments.front().Expiration);
+  EXPECT_EQ(10, shipments.front().Quantity);
 }
 
 // ##################### STEP 3 ##################

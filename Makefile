@@ -29,7 +29,7 @@ CXXFLAGS += -g -Wall -Wextra -pthread
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = warehouse_unittest
+TESTS = Warehouse_Unittest
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -68,13 +68,12 @@ gtest_main.a : gtest-all.o gtest_main.o
 	$(AR) $(ARFLAGS) $@ $^
 
 
-warehouse.o : $(USER_DIR)/warehouse.cpp $(USER_DIR)/warehouse.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/warehouse.cpp
+Warehouse.o : $(USER_DIR)/Warehouse.cpp $(USER_DIR)/Warehouse.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/Warehouse.cpp
 
+Warehouse_Unittest.o : $(USER_DIR)/Warehouse_Unittest.cpp \
+                     $(USER_DIR)/Warehouse.h $(USER_DIR)/Shipment.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/Warehouse_Unittest.cpp
 
-warehouse_unittest.o : $(USER_DIR)/warehouse_unittest.cpp \
-                     $(USER_DIR)/warehouse.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/warehouse_unittest.cpp
-
-warehouse_unittest : warehouse.o warehouse_unittest.o gtest_main.a
+Warehouse_Unittest : Warehouse.o Warehouse_Unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@

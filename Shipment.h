@@ -12,6 +12,12 @@ struct Shipment
 	//UTC timestamp of expiration
 	int Expiration;
 	int Quantity;
+
+  Shipment(int expiration, int quantity)
+  {
+    Expiration = expiration;
+    Quantity = quantity;
+  }
 };
 
 #endif

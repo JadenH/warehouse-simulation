@@ -1,41 +1,79 @@
-/* warehouse.cpp
+/* Warehouse.cpp
 * Authors: Adam Waggoner, Jaden Holladay
 */
 
-#include "warehouse.h"
-#include "shipment.h"
+#include "Warehouse.h"
+#include "Shipment.h"
 #include <map>
 
 //Default constructor
-warehouse::warehouse(const std::string name)
+Warehouse::Warehouse(const std::string name)
 {
 	this->Name = name;
-	this->_Inventory = new std::map<int, std::deque<Shipment>* >();
+	_inventory = new std::map<int, std::deque<Shipment>* >();
 }
 
 //Copy constructor
-warehouse::warehouse(const warehouse & rhs)
+Warehouse::Warehouse(const Warehouse & rhs)
 {
 	//TODO: Implement this
 }
 
 //Destructor
-warehouse::~warehouse()
+Warehouse::~Warehouse()
 {
-	delete(this->_Inventory);
+	delete _inventory;
 }
 
-void warehouse::RecieveShipment(Shipment s)
+void Warehouse::ReceiveShipment(const int upc, const Shipment & shipment)
 {
-	//TODO: Implement this
+  std::map<int, std::deque<Shipment>* >::iterator it = _inventory->find(upc);
+
+  // If we have added this product upc before we add it to the deque.
+  // Otherwise create a new deque and add the shipment.
+  if (it != _inventory->end())
+  {
+    it->second->push_back(shipment);
+  }
+  else
+  {
+    std::deque<Shipment>* Shipments = new std::deque<Shipment>();
+    Shipments->push_back (shipment);
+    _inventory->insert(make_pair(upc, Shipments));
+  }
 }
 
-void warehouse::RequestShipment(Shipment s)
+void Warehouse::RequestShipment(const int upc, const int quantity)
 {
-	//TODO: Implement this
+  std::map<int, std::deque<Shipment>* >::iterator it = _inventory->find(upc);
+  if (it != _inventory->end())
+  {
+    RemoveExpired(upc);
+    //TODO: Check if expired & remove up to quantity amount.
+  }
 }
 
-void warehouse::RemoveExpired()
+/* Finds the shipments for a given product by upc.
+ * Returns a deque or Shipments.
+ */
+std::deque<Shipment> Warehouse::Get_Inventory(const int upc)
+{
+  std::map<int, std::deque<Shipment>* >::iterator it = _inventory->find(upc);
+  if (it != _inventory->end())
+  {
+    // Return the dereferenced deque of shipments.
+    return *(it->second);
+  }
+}
+
+// Do we want to have this? Not sure yet...
+// bool Warehouse::ContainsProduct(const int upc)
+// {
+//   std::map<int, std::deque<Shipment>* >::iterator it = _inventory->find(upc);
+//   return it != _inventory->end();
+// }
+
+void Warehouse::RemoveExpired()
 {
 	//TODO: Implement this
 }

@@ -29,7 +29,7 @@ class Warehouse
 	private:
 		// Contains shipments indexed by their UPC, and in the order of their expiration dates
 		std::map<int, std::deque<Shipment>* >* _inventory;
-    void RemoveExpired();
+    void RemoveExpired(int upc);
 };
 
 #endif

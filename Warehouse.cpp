@@ -73,7 +73,7 @@ std::deque<Shipment> Warehouse::Get_Inventory(const int upc)
 //   return it != _inventory->end();
 // }
 
-void Warehouse::RemoveExpired()
+void Warehouse::RemoveExpired(int upc)
 {
 	//TODO: Implement this
 }

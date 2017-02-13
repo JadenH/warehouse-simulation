@@ -38,6 +38,46 @@ TEST(Test_Constructor, Add_Shipment) {
   EXPECT_EQ(10, shipments.front().Quantity);
 }
 
+// +++++++++++++++++++ Test DateTime +++++++++++++++++++ 
+
+/* NOTES ON time.h
+*
+* Uses the local time zone of the machine running the code. 
+* this shouldn't be a problem since we're not worried
+* about hours or minutes.
+* 
+* Need to fully initialize a struct tm to be empty before
+* converting into it.
+*/
+
+// This is kinda weird. Google test doesn't like 
+// my static method, so I included the function 
+// declaration itself in this test class
+#include "DateTime.cpp"
+
+// Converts a datetime to a UTC time code
+TEST(Test_DateTime, Convert_UTC)
+{
+	int utcTime = DateTime::ConvertToUTC("1996/12/11");
+
+    EXPECT_EQ(850287600, utcTime);
+}
+
+//Assert that the timestamps for two different dates are 1 day apart from eachother when converted to utc
+TEST(Test_DateTime, UTC_Date_Difference)
+{
+	std::string dateA = "1996/12/11";
+	std::string dateB = "1996/12/12";
+
+	int utcTimeA = DateTime::ConvertToUTC(dateA);
+	int utcTimeB = DateTime::ConvertToUTC(dateB);
+
+    //Ensure that the length of time between the two dates is 
+    //86400 (the length of one day)
+    EXPECT_EQ(utcTimeB - utcTimeA, 86400);
+    EXPECT_EQ(DateTime::DaysBetween(dateA,dateB), 1);
+    EXPECT_EQ(DateTime::DaysBetween(utcTimeA, utcTimeB), 1);
+}
 // ##################### STEP 3 ##################
 // Run all the defined tests by calling RUN_ALL_TESTS() in main().
 // This is done for us by linking gtest_main.cc through our makefile.

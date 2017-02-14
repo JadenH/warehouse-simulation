@@ -15,6 +15,8 @@ class DateTime
 		static int ConvertToUTC(const std::string date);
 		static int DaysBetween(const int UTCValueA, const int UTCValueB);
 		static int DaysBetween(const std::string a, const std::string b);
+		//How long a day is in UTC time
+		const static int TIMEPERDAY = 86400;
 };
 
 #endif

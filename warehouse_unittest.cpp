@@ -51,8 +51,8 @@ TEST(Test_Constructor, Add_Shipment) {
 */
 
 // This is kinda weird. Google test doesn't like 
-// my static method, so I included the function 
-// declaration itself in this test class
+// my static methods, so I included the function 
+// declarations themselves in this test class
 #include "DateTime.cpp"
 
 // Converts a datetime to a UTC time code
@@ -78,6 +78,17 @@ TEST(Test_DateTime, UTC_Date_Difference)
     EXPECT_EQ(DateTime::DaysBetween(dateA,dateB), 1);
     EXPECT_EQ(DateTime::DaysBetween(utcTimeA, utcTimeB), 1);
 }
+
+// Tests the DateTime implementation on a pretty big range of dates (my lifetime so far!)
+// Demonstrates that the DateTime functions correctly account for leap years
+TEST(Test_DateTime, UTC_Big_Date_Difference)
+{
+	std::string dateA = "1996/12/11";
+	std::string dateB = "2017/02/14";
+
+    EXPECT_EQ(DateTime::DaysBetween(dateA,dateB), 7370);
+}
+
 // ##################### STEP 3 ##################
 // Run all the defined tests by calling RUN_ALL_TESTS() in main().
 // This is done for us by linking gtest_main.cc through our makefile.

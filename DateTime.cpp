@@ -1,3 +1,9 @@
+/* DateTime.cpp
+*
+* Contains static methods that make working with the ctime library simpler
+* 
+*/
+
 #include "DateTime.h"
 #include <time.h>
 
@@ -19,7 +25,7 @@ int DateTime::ConvertToUTC(const std::string date)
 int DateTime::DaysBetween(const int UTCValueA, const int UTCValueB)
 {
 	//86400 is the amount of time that elapsed in a day
-	return (UTCValueB - UTCValueA) / 86400;
+	return (UTCValueB - UTCValueA) / TIMEPERDAY;
 }
 
 //Returns the number of days from date string A to B (floors to an int using int division)

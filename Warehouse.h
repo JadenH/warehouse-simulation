@@ -24,7 +24,7 @@ class Warehouse
 		void ReceiveShipment(const std::string upc, const Shipment & shipment);
 		void RequestShipment(const std::string upc, const int quantity);
 
-    Shipments Get_Inventory(const std::string upc) const;
+    Inventory Get_Inventory() const;
 
 		std::string Name;
 

@@ -50,13 +50,9 @@ void Warehouse::RequestShipment(const std::string upc, const int quantity)
 /* Finds the shipments for a given product by upc.
  * Returns a deque or Shipments.
  */
-Shipments Warehouse::Get_Inventory(const std::string upc) const
+Inventory Warehouse::Get_Inventory() const
 {
-  Inventory::const_iterator it = _inventory.find(upc);
-  if (it != _inventory.end())
-  {
-    return it->second;
-  }
+  return _inventory;
 }
 
 // Do we want to have this? Not sure yet...

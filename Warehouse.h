@@ -12,6 +12,9 @@
 * Represents the collection of shipments within a warehouse
 */
 
+typedef std::deque<Shipment> Shipments;
+typedef std::map<std::string, Shipments*> Inventory;
+
 class Warehouse
 {
 	public:
@@ -28,7 +31,7 @@ class Warehouse
 
 	private:
 		// Contains shipments indexed by their UPC, and in the order of their expiration dates
-		std::map<std::string, std::deque<Shipment>* >* _inventory;
+		Inventory* _inventory;
     void RemoveExpired(std::deque<Shipment> & shipments);
 };
 

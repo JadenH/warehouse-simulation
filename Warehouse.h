@@ -19,16 +19,16 @@ class Warehouse
 		Warehouse(const Warehouse & rhs);
 		~Warehouse();
 
-		void ReceiveShipment(const int upc, const Shipment & shipment);
-		void RequestShipment(const int upc, const int quantity);
+		void ReceiveShipment(const std::string upc, const Shipment & shipment);
+		void RequestShipment(const std::string upc, const int quantity);
 
-    std::deque<Shipment> Get_Inventory(const int upc) const;
+    std::deque<Shipment> Get_Inventory(const std::string upc) const;
 
 		std::string Name;
 
 	private:
 		// Contains shipments indexed by their UPC, and in the order of their expiration dates
-		std::map<int, std::deque<Shipment>* >* _inventory;
+		std::map<std::string, std::deque<Shipment>* >* _inventory;
     void RemoveExpired(std::deque<Shipment> & shipments);
 };
 

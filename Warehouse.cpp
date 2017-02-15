@@ -7,7 +7,7 @@
 #include <map>
 
 typedef std::deque<Shipment> Shipments;
-typedef std::map<int, Shipments*> Inventory;
+typedef std::map<std::string, Shipments*> Inventory;
 
 //Default constructor
 Warehouse::Warehouse(const std::string name)
@@ -28,7 +28,7 @@ Warehouse::~Warehouse()
 	delete _inventory;
 }
 
-void Warehouse::ReceiveShipment(const int upc, const Shipment & shipment)
+void Warehouse::ReceiveShipment(const std::string upc, const Shipment & shipment)
 {
   Inventory::iterator item = _inventory->find(upc);
 
@@ -46,7 +46,7 @@ void Warehouse::ReceiveShipment(const int upc, const Shipment & shipment)
   }
 }
 
-void Warehouse::RequestShipment(const int upc, const int quantity)
+void Warehouse::RequestShipment(const std::string upc, const int quantity)
 {
   Inventory::iterator it = _inventory->find(upc);
   if (it != _inventory->end())
@@ -60,7 +60,7 @@ void Warehouse::RequestShipment(const int upc, const int quantity)
 /* Finds the shipments for a given product by upc.
  * Returns a deque or Shipments.
  */
-Shipments Warehouse::Get_Inventory(const int upc) const
+Shipments Warehouse::Get_Inventory(const std::string upc) const
 {
   Inventory::iterator it = _inventory->find(upc);
   if (it != _inventory->end())
@@ -71,7 +71,7 @@ Shipments Warehouse::Get_Inventory(const int upc) const
 }
 
 // Do we want to have this? Not sure yet...
-// bool Warehouse::ContainsProduct(const int upc)
+// bool Warehouse::ContainsProduct(const std::string upc)
 // {
 //   std::map<int, std::deque<Shipment>* >::iterator it = _inventory->find(upc);
 //   return it != _inventory->end();

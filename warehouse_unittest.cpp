@@ -29,9 +29,9 @@ TEST(Test_Constructor, Properly_Assigns_Name) {
 TEST(Test_Constructor, Add_Shipment) {
   Warehouse some_warehouse("Utah");
   Shipment s(5, 10);
-  some_warehouse.ReceiveShipment(000000, s);
+  some_warehouse.ReceiveShipment("000000", s);
 
-  std::deque<Shipment> shipments = some_warehouse.Get_Inventory(000000);
+  std::deque<Shipment> shipments = some_warehouse.Get_Inventory("000000");
 
   EXPECT_EQ(1, shipments.size());
   EXPECT_EQ(5, shipments.front().Expiration);

@@ -31,7 +31,7 @@ TEST(Test_Constructor, Add_Shipment) {
   Shipment s(5, 10);
   some_warehouse.ReceiveShipment("000000", s);
 
-  std::deque<Shipment> shipments = some_warehouse.Get_Inventory("000000");
+  Shipments shipments = some_warehouse.Get_Inventory("000000");
 
   EXPECT_EQ(1, shipments.size());
   EXPECT_EQ(5, shipments.front().Expiration);

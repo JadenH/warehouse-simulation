@@ -6,7 +6,6 @@
 #include "Shipment.h"
 #include <map>
 
-
 //Default constructor
 Warehouse::Warehouse(const std::string name)
 {

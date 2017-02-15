@@ -6,8 +6,6 @@
 #include "Shipment.h"
 #include <map>
 
-typedef std::deque<Shipment> Shipments;
-typedef std::map<std::string, Shipments*> Inventory;
 
 //Default constructor
 Warehouse::Warehouse(const std::string name)

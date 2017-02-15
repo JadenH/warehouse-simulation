@@ -38,10 +38,12 @@ GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h \
 
 # House-keeping build targets.
 
-all : $(TESTS)
+all : Transation_Simulation
+
+tests: $(TESTS)
 
 clean :
-	rm -f $(TESTS) gtest.a gtest_main.a *.o
+	rm -f $(TESTS) gtest.a gtest_main.a *.o *.out
 
 # Builds gtest.a and gtest_main.a.
 
@@ -67,7 +69,6 @@ gtest.a : gtest-all.o
 gtest_main.a : gtest-all.o gtest_main.o
 	$(AR) $(ARFLAGS) $@ $^
 
-
 Warehouse.o : $(USER_DIR)/Warehouse.cpp $(USER_DIR)/Warehouse.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/Warehouse.cpp
 
@@ -75,5 +76,10 @@ Warehouse_Unittest.o : $(USER_DIR)/Warehouse_Unittest.cpp \
                      $(USER_DIR)/Warehouse.h $(USER_DIR)/Shipment.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/Warehouse_Unittest.cpp
 
+TransactionSimulation.o : $(USER_DIR)/TransactionSimulation.cpp
+
 Warehouse_Unittest : Warehouse.o Warehouse_Unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
+
+Transation_Simulation : Warehouse.o TransactionSimulation.o
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o a.out

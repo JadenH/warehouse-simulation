@@ -11,9 +11,15 @@
 
 struct Product
 {
-	int UPC;
+	std::string UPC;
 	int Lifespan;
 	std::string Name;
+  Product(std::string upc, int lifespan, std::string name)
+  {
+    UPC = upc;
+    Lifespan = lifespan;
+    Name = name;
+  }
 };
 
 #endif

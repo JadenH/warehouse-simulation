@@ -38,6 +38,11 @@ int main(int argc, char ** argv)
     if (!line.find("Next day:"))
     {
       current_day++;
+
+      for(Warehouses::iterator itr = warehouses.begin(); itr != warehouses.end(); itr++)
+      {
+      	itr->second.RemoveExpired(current_day);
+      }
     }
     else if (!line.find("Warehouse"))
     {

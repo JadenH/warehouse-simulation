@@ -23,15 +23,15 @@ class Warehouse
 
 		void ReceiveShipment(const std::string upc, const Shipment & shipment);
 		void RequestShipment(const std::string upc, const int quantity);
+		void RemoveExpired(int date);
 
-    Inventory Get_Inventory() const;
+    	Inventory Get_Inventory() const;
 
 		std::string Name;
 
 	private:
 		// Contains shipments indexed by their UPC, and in the order of their expiration dates
 		Inventory _inventory;
-    void RemoveExpired(Shipments & shipments);
 };
 
 #endif

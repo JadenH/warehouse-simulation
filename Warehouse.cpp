@@ -6,6 +6,7 @@
 #include "Shipment.h"
 #include <map>
 #include <iostream>
+#include <stack>
 
 //Default constructor
 Warehouse::Warehouse(const std::string name)
@@ -20,6 +21,7 @@ Warehouse::~Warehouse()
 
 void Warehouse::ReceiveShipment(const std::string upc, const Shipment & shipment)
 {
+
   Inventory::iterator item = _inventory.find(upc);
 
   // If we have added this product upc before we add it to the deque.
@@ -62,13 +64,38 @@ Inventory Warehouse::Get_Inventory() const
 //   return it != _inventory.end();
 // }
 
-void Warehouse::RemoveExpired(Shipments & shipments)
+//Called at the start of each new day. Expired shipments get removed from this warehouse
+void Warehouse::RemoveExpired(int date)
 {
-  for (Shipments::iterator it = shipments.begin(); it != shipments.end(); ++it)
+  //Check each different item type in the inventory
+  for(Inventory::iterator itr = _inventory.begin(); itr != _inventory.end(); ++itr)
   {
-    if (it->Expiration > 0)
+    //build a stack of expired shipments
+    std::stack<Shipments::iterator> destroy_stack;
+
+    Shipments & shipments = itr->second;
+
+    for (Shipments::iterator it = shipments.begin(); it != shipments.end(); ++it)
     {
-      //TODO: Delete this thing.
+      if (it->Expiration < date)
+      {
+        //add the iterator at this position to stack of shipments to be destroyed
+        destroy_stack.push(it);
+      }
+      else
+      {
+        //since the newest shipments should be added last
+        //if we've hit a non-expired shipment, we know there
+        //won't be anymore
+        break;
+      }
+    }
+
+    //erase all of the expired shipments
+    while(!destroy_stack.empty())
+    {
+      shipments.erase(destroy_stack.top());
+      destroy_stack.pop();
     }
   }
 }

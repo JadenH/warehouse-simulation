@@ -51,7 +51,9 @@ int main(int argc, char ** argv)
     else if (!line.find("FoodItem"))
     {
       // TODO: Fix Words[11] (Whitespaces) & get rest of the name.
-      products.insert(make_pair(words[4], Product(words[4], atoi(words[7].c_str()), words[11])));
+      //Get the start position of the name of the fooditem
+      int name_pos = line.find(words[11]);
+      products.insert(make_pair(words[4], Product(words[4], atoi(words[7].c_str()), line.substr(name_pos))));
     }
     else if (!line.find("Request"))
     {

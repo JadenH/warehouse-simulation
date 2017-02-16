@@ -77,7 +77,7 @@ int main(int argc, char ** argv)
   }
   in.close();
 
-  cout << current_day << endl;
+  cout << "Current day: " << current_day << endl;
   cout << "Report by Jaden Holladay & Adam Waggoner" << endl;
   cout << endl; //Print a single blank line after the title
   UnstockedProducts(warehouses, products);

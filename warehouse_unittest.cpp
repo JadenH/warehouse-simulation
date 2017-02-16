@@ -26,16 +26,46 @@ TEST(Test_Constructor, Properly_Assigns_Name) {
 
 // +++++++++++++++++++ Test Functionality ++++++++++++++++++++++++++
 
-TEST(Test_Constructor, Add_Shipment) {
+TEST(Test_Functionality, Add_Shipment) {
   Warehouse some_warehouse("Utah");
   Shipment s(5, 10);
   some_warehouse.ReceiveShipment("000000", s);
 
-  Shipments shipments = some_warehouse.Get_Inventory("000000");
+  Shipments shipments = some_warehouse.Get_Inventory().find("000000")->second;
 
   EXPECT_EQ(1, shipments.size());
   EXPECT_EQ(5, shipments.front().Expiration);
   EXPECT_EQ(10, shipments.front().Quantity);
+}
+
+//Ensure that expired shipments are fully removed from an inventory
+TEST(Test_Functionality, Expired_Removal)
+{
+	Warehouse test_warehouse("Mordor");
+	Shipment s(5,10);
+
+	test_warehouse.ReceiveShipment("0237", s);
+
+	test_warehouse.RemoveExpired(100);
+
+	EXPECT_EQ(test_warehouse.Get_Inventory().size(), 0);
+}
+
+//Ensure that expired shipments are fully removed from an inventory
+TEST(Test_Functionality, Expired_Removal_2)
+{
+	Warehouse test_warehouse("Mordor");
+	Shipment s(2,10);
+
+	test_warehouse.ReceiveShipment("0237", s);
+	s.Expiration = 6;
+	s.Quantity = 2;
+	test_warehouse.ReceiveShipment("0237", s);
+
+	test_warehouse.RemoveExpired(3);
+
+	EXPECT_EQ(test_warehouse.Get_Inventory().size(), 1);
+	EXPECT_EQ(test_warehouse.Get_Inventory().find("0237")->second.size(), 1);
 }
 
 // +++++++++++++++++++ Test DateTime +++++++++++++++++++

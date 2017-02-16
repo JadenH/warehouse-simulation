@@ -147,6 +147,7 @@ void Warehouse::RemoveExpired(int date)
     }
   }
 
+  //If there are "shipments" in the inventory with no shipment objects, erase them.
   while(!erase_stack_ments.empty())
   {
     _inventory.erase(erase_stack_ments.top());

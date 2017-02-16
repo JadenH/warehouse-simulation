@@ -58,11 +58,15 @@ int main(int argc, char ** argv)
     }
     else if (!line.find("Request"))
     {
+      // Find the product in the product table and add the quanitity requested
+      // to the total requested of that product. Later used in the report.
       std::map<std::string, Product>::iterator product = products.find(words[1]);
       if (product != products.end())
       {
         product->second.TotalRequested += atoi(words[3].c_str());
       }
+
+      // Go to the warehouse and fullfill the request.
       std::map<std::string, Warehouse>::iterator it = warehouses.find(words[3]);
       if (it != warehouses.end())
       {

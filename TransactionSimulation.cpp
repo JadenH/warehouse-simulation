@@ -14,6 +14,7 @@ typedef std::map<std::string, Product> Products;
 //Forward declarations
 void UnstockedProducts(Warehouses warehouses, Products products);
 void WellStockedProducts(Warehouses warehouses, Products products);
+void MostPopularProducts(Warehouses warehouses, Products products);
 
 int main(int argc, char ** argv)
 {
@@ -57,6 +58,11 @@ int main(int argc, char ** argv)
     }
     else if (!line.find("Request"))
     {
+      std::map<std::string, Product>::iterator product = products.find(words[1]);
+      if (product != products.end())
+      {
+        product->second.TotalRequested += atoi(words[3].c_str());
+      }
       std::map<std::string, Warehouse>::iterator it = warehouses.find(words[3]);
       if (it != warehouses.end())
       {
@@ -72,7 +78,6 @@ int main(int argc, char ** argv)
         Shipment shipment(product->second.Lifespan + current_day, atoi(words[2].c_str()));
         warehouse->second.ReceiveShipment(words[1], shipment);
       }
-
     }
   }
   in.close();
@@ -84,6 +89,9 @@ int main(int argc, char ** argv)
   cout << endl;
   WellStockedProducts(warehouses, products);
   cout << endl;
+  MostPopularProducts(warehouses, products);
+  cout << endl;
+
   // END CITED
   return 0;
 }
@@ -93,7 +101,7 @@ void UnstockedProducts(Warehouses warehouses, Products products)
 {
   cout << "Unstocked Products:" << endl;
 
-	//Create a set of all the upcs in the product table 		
+	//Create a set of all the upcs in the product table
   set<string> upcs;
   for (Products::iterator product = products.begin(); product != products.end(); ++product)
   {
@@ -137,14 +145,14 @@ void WellStockedProducts(Warehouses warehouses, Products products)
 
   //Set that will contain upcs of all well stocked items
   set<string> wellstocked;
-  
+
   for (Products::iterator product = products.begin(); product != products.end(); ++product)
   {
     upcs.insert(make_pair(product->first,0));
   }
 
   //Iterate through each warehouse, and iterate through their inventories.
-  for (Warehouses::iterator itr= warehouses.begin(); itr!= warehouses.end(); itr++)
+  for (Warehouses::iterator itr = warehouses.begin(); itr != warehouses.end(); itr++)
   {
   	//Gets the inventory from the current warehouse
     Inventory inventory = itr->second.Get_Inventory();
@@ -175,4 +183,29 @@ void WellStockedProducts(Warehouses warehouses, Products products)
     }
   }
 
+}
+
+bool CompareRequested(const Product & a, const Product & b)
+{
+    // smallest comes first
+    return a.TotalRequested > b.TotalRequested;
+}
+
+//Find all unstocked products and print their upcs and names
+void MostPopularProducts(Warehouses warehouses, Products products)
+{
+  cout << "Most Popular Products:" << endl;
+
+  vector<Product> popularProducts;
+  for (Products::iterator product = products.begin(); product != products.end(); ++product)
+  {
+    popularProducts.push_back(product->second);
+  }
+
+  std::sort(popularProducts.begin(), popularProducts.end(), CompareRequested);
+
+  for (int i = 0; i < min(static_cast<int>(popularProducts.size()), 3); i++ )
+  {
+    cout << popularProducts.at(i).UPC + " " + popularProducts.at(i).Name << endl;
+  }
 }

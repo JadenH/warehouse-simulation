@@ -11,7 +11,9 @@ using namespace std;
 typedef std::map<std::string, Warehouse> Warehouses;
 typedef std::map<std::string, Product> Products;
 
+//Forward declarations
 void UnstockedProducts(Warehouses warehouses, Products products);
+void WellStockedProducts(Warehouses warehouses, Products products);
 
 int main(int argc, char ** argv)
 {
@@ -70,26 +72,36 @@ int main(int argc, char ** argv)
 
   cout << current_day << endl;
   cout << "Report by Jaden Holladay & Adam Waggoner" << endl;
+  cout << endl; //Print a single blank line after the title
   UnstockedProducts(warehouses, products);
-
+  cout << endl;
+  WellStockedProducts(warehouses, products);
+  cout << endl;
   // END CITED
   return 0;
 }
 
+//Find all unstocked products and print their upcs and names
 void UnstockedProducts(Warehouses warehouses, Products products)
 {
+  cout << "Unstocked Products:" << endl;
+
+	//Create a set of all the upcs in the product table 		
   set<string> upcs;
   for (Products::iterator product = products.begin(); product != products.end(); ++product)
   {
     upcs.insert(product->first);
   }
 
+  //Iterate through each warehouse, and iterate through their inventories.
   for (Warehouses::iterator warehouse = warehouses.begin(); warehouse != warehouses.end(); ++warehouse)
   {
     Inventory inventory = warehouse->second.Get_Inventory();
     for (Inventory::iterator items = inventory.begin(); items != inventory.end(); items++)
     {
       set<string>::iterator item = upcs.find(items->first);
+
+      //If we find certain upc, we just remove it from our set of upcs
       if (item != upcs.end())
       {
         upcs.erase(item);
@@ -98,6 +110,7 @@ void UnstockedProducts(Warehouses warehouses, Products products)
 
   }
 
+  //Print all of the names
   for (set<string>::iterator upc = upcs.begin(); upc != upcs.end(); ++upc)
   {
     Products::iterator product = products.find(*(upc));
@@ -106,4 +119,53 @@ void UnstockedProducts(Warehouses warehouses, Products products)
       cout << *(upc) + " " + product->second.Name << endl;
     }
   }
+}
+
+//Find all unstocked products and print their upcs and names
+void WellStockedProducts(Warehouses warehouses, Products products)
+{
+  cout << "Well Stocked Products:" << endl;
+  //Maps each upc to an int count of how many of these products exist
+  map<string, int> upcs;
+
+  //Set that will contain upcs of all well stocked items
+  set<string> wellstocked;
+  
+  for (Products::iterator product = products.begin(); product != products.end(); ++product)
+  {
+    upcs.insert(make_pair(product->first,0));
+  }
+
+  //Iterate through each warehouse, and iterate through their inventories.
+  for (Warehouses::iterator itr= warehouses.begin(); itr!= warehouses.end(); itr++)
+  {
+  	//Gets the inventory from the current warehouse
+    Inventory inventory = itr->second.Get_Inventory();
+
+    //iterate over each collection of shipments
+    for (Inventory::iterator jtr = inventory.begin(); jtr != inventory.end(); jtr++)
+    {
+      map<string,int>::iterator item = upcs.find(jtr->first);
+
+      //If we find certain upc, increment its count in the map
+      if (item != upcs.end())
+      {
+        upcs.find(item->first)->second++;
+      }
+    }
+
+  }
+
+  //Print all of the names
+  for (map<string, int>::iterator upc = upcs.begin(); upc != upcs.end(); ++upc)
+  {
+    Products::iterator product = products.find(upc->first);
+
+    //if this product is well stocked
+    if (product != products.end() && upcs.find(upc->first)->second >= 2)
+    {
+      cout << upc->first << " " << product->second.Name << endl;
+    }
+  }
+
 }

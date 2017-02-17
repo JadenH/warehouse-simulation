@@ -53,6 +53,27 @@ TEST(Test_Functionality, Request_Shipment_Removed) {
   EXPECT_EQ(0, shipments.size());
 }
 
+// Check that requesting from a complicated shipments structure
+// removes accurately
+TEST(Test_Functionality, Request_Shipment_Advanced) {
+  Warehouse some_warehouse("Utah");
+  Shipment s(5, 10);
+  some_warehouse.ReceiveShipment("000000", s);
+  s.Expiration = 6;
+  some_warehouse.ReceiveShipment("000000", s);
+  s.Expiration = 8;
+  some_warehouse.ReceiveShipment("000000", s);
+  some_warehouse.RequestShipment("000000", 25);
+
+  Inventory inventory = some_warehouse.Get_Inventory();
+
+  EXPECT_EQ(1, inventory.size());
+
+  Shipments shipments = inventory.find("000000")->second;
+
+  EXPECT_EQ(5, shipments[0].Quantity);
+}
+
 // Check that removing some quantity does not remove the entire shipment.
 TEST(Test_Functionality, Request_Shipment) {
   Warehouse some_warehouse("Utah");

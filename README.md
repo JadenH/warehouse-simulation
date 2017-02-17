@@ -8,9 +8,19 @@ Build:
 $ make
 ```
 
+Run:
+```sh
+$ ./a.out [filename]
+```
+
+Build Tests:
+```sh
+$ make tests
+```
+
 Run the tests:
 ```sh
-$ ./warehouse_unittest
+$ ./Warehouse_Unittest
 ```
 
 Clean the repository:

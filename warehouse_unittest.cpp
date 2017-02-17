@@ -39,7 +39,7 @@ TEST(Test_Functionality, Add_Shipment) {
   EXPECT_EQ(10, shipments.front().Quantity);
 }
 
-// Check that requesting all the quanitity removes the product
+// Check that requesting all the quantity removes the product
 // from the warehouse inventory.
 TEST(Test_Functionality, Request_Shipment_Removed) {
   Warehouse some_warehouse("Utah");

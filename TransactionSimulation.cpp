@@ -73,7 +73,7 @@ int main(int argc, char ** argv)
       std::map<std::string, Product>::iterator product = products.find(words[1]);
       if (product != products.end())
       {
-        product->second.TotalRequested += atoi(words[3].c_str());
+        product->second.TotalRequested += atoi(words[2].c_str());
       }
 
       // Go to the warehouse and fullfill the request.

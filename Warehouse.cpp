@@ -53,6 +53,7 @@ namespace cs3505
 
     Shipments & product_shipments = upitr->second;
 
+    // Create a stack for all the shipments we will need to remove from our inventory.
     std::stack<Shipments::iterator> destroy_stack;
     int amount = quantity;
     for(Shipments::iterator shipment = product_shipments.begin(); shipment != product_shipments.end(); shipment++)

@@ -20,7 +20,6 @@ namespace cs3505
   {
     public:
       Warehouse(const std::string name);
-      ~Warehouse();
 
       void ReceiveShipment(const std::string upc, Shipment shipment);
       void RequestShipment(const std::string upc, const int quantity);

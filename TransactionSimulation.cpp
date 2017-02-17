@@ -15,7 +15,7 @@ typedef std::map<std::string, Product> Products;
 // Forward declarations
 void UnstockedProducts(Warehouses warehouses, Products products);
 void WellStockedProducts(Warehouses warehouses, Products products);
-void MostPopularProducts(Warehouses warehouses, Products products);
+void MostPopularProducts(Products products);
 
 int main(int argc, char ** argv)
 {
@@ -104,7 +104,7 @@ int main(int argc, char ** argv)
   cout << endl;
   WellStockedProducts(warehouses, products);
   cout << endl;
-  MostPopularProducts(warehouses, products);
+  MostPopularProducts(products);
   cout << endl;
 
   // END CITED
@@ -209,7 +209,7 @@ bool CompareRequested(const Product & a, const Product & b)
 }
 
 //Find all unstocked products and print their upcs and names
-void MostPopularProducts(Warehouses warehouses, Products products)
+void MostPopularProducts(Products products)
 {
   cout << "Most Popular Products:" << endl;
 

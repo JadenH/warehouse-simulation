@@ -16,11 +16,6 @@ namespace cs3505
     this->Name = name;
   }
 
-  //Destructor
-  Warehouse::~Warehouse()
-  {
-  }
-
   void Warehouse::ReceiveShipment(const std::string upc, Shipment shipment)
   {
 
@@ -128,8 +123,10 @@ namespace cs3505
 
       if (number_shipments_expired > 0)
       {
+        // Remove the expired shipments
         shipments.erase(shipments.begin(), shipments.begin() + number_shipments_expired);
 
+        // If there is no more shipments of the product in the warehouse we can remove it entirely.
         if(shipments.size() == 0)
         {
           erase_stack_ments.push(inventory);

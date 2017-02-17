@@ -2,22 +2,25 @@
 #define SHIPMENTH
 
 /* Shipment.h
-* Authors: Adam Waggoner, Jaden Holladay
-*
-* Represents a shipment of products with a lifetime and quantity
-*/
-
-struct Shipment
+ * Authors: Adam Waggoner, Jaden Holladay
+ *
+ * Represents a shipment of products with a lifetime and quantity
+ */
+namespace cs3505
 {
-	//UTC timestamp of expiration
-	int Expiration;
-	int Quantity;
-
-  Shipment(int expiration, int quantity)
+  struct Shipment
   {
-    Expiration = expiration;
-    Quantity = quantity;
-  }
-};
+    //UTC timestamp of expiration
+    int Expiration;
+    int Quantity;
+
+    Shipment(int expiration, int quantity)
+    {
+      Expiration = expiration;
+      Quantity = quantity;
+    }
+  };
+}
+
 
 #endif

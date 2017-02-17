@@ -13,6 +13,7 @@
 
 #include <iostream>
 
+using namespace cs3505;
 // ##################### STEP 2 ##################
 // Implement all the tests!
 

@@ -7,31 +7,32 @@
 #include "Shipment.h"
 
 /* Warehouse.h
-* Authors: Adam Waggoner, Jaden Holladay
-*
-* Represents the collection of shipments within a warehouse
-*/
-
-typedef std::vector<Shipment> Shipments;
-typedef std::map<std::string, Shipments> Inventory;
-
-class Warehouse
+ * Authors: Adam Waggoner, Jaden Holladay
+ *
+ * Represents the collection of shipments within a warehouse
+ */
+namespace cs3505
 {
-	public:
-		Warehouse(const std::string name);
-		~Warehouse();
+  typedef std::vector<Shipment> Shipments;
+  typedef std::map<std::string, Shipments> Inventory;
 
-		void ReceiveShipment(const std::string upc, const Shipment & shipment);
-		void RequestShipment(const std::string upc, const int quantity);
-		void RemoveExpired(int date);
+  class Warehouse
+  {
+    public:
+      Warehouse(const std::string name);
+      ~Warehouse();
 
-  	Inventory Get_Inventory() const;
+      void ReceiveShipment(const std::string upc, const Shipment & shipment);
+      void RequestShipment(const std::string upc, const int quantity);
+      void RemoveExpired(int date);
 
-		std::string Name;
+      Inventory Get_Inventory() const;
 
-	private:
-		// Contains shipments indexed by their UPC, and in the order of their expiration dates
-		Inventory _inventory;
-};
+      std::string Name;
 
+    private:
+      // Contains shipments indexed by their UPC, and in the order of their expiration dates
+      Inventory _inventory;
+  };
+}
 #endif

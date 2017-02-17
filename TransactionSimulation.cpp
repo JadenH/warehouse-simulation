@@ -7,6 +7,7 @@
 #include <set>
 
 using namespace std;
+using namespace cs3505;
 
 typedef std::map<std::string, Warehouse> Warehouses;
 typedef std::map<std::string, Product> Products;

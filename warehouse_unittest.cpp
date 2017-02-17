@@ -48,9 +48,25 @@ TEST(Test_Functionality, Request_Shipment_Removed) {
   some_warehouse.ReceiveShipment("000000", s);
   some_warehouse.RequestShipment("000000", 10);
 
-  Inventory shipments = some_warehouse.Get_Inventory();
+  Inventory inventory = some_warehouse.Get_Inventory();
 
-  EXPECT_EQ(0, shipments.size());
+  EXPECT_EQ(0, inventory.size());
+}
+
+// Check that requesting all the quantity removes the product
+// from the warehouse inventory.
+TEST(Test_Functionality, Request_Shipment_Removed_2) {
+  Warehouse some_warehouse("Utah");
+  Shipment s(5, 10);
+  some_warehouse.ReceiveShipment("000000", s);
+  some_warehouse.ReceiveShipment("000000", s);
+  some_warehouse.ReceiveShipment("000000", s);
+  some_warehouse.ReceiveShipment("000000", s);
+  some_warehouse.RequestShipment("000000", 40);
+
+  Inventory inventory = some_warehouse.Get_Inventory();
+
+  EXPECT_EQ(0, inventory.size());
 }
 
 // Check that requesting from a complicated shipments structure

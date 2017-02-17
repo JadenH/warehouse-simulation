@@ -21,7 +21,7 @@ namespace cs3505
   {
   }
 
-  void Warehouse::ReceiveShipment(const std::string upc, const Shipment & shipment)
+  void Warehouse::ReceiveShipment(const std::string upc, Shipment shipment)
   {
 
     Inventory::iterator item = _inventory.find(upc);
@@ -42,46 +42,49 @@ namespace cs3505
 
   void Warehouse::RequestShipment(const std::string upc, const int quantity)
   {
-
-    Inventory::iterator upitr = _inventory.find(upc);
+    Inventory::iterator inventory_item = _inventory.find(upc);
 
     // Check that we were able to find the product, if not return early.
-    if(upitr == _inventory.end())
+    if(inventory_item == _inventory.end())
     {
       return;
     }
 
-    Shipments & product_shipments = upitr->second;
+    Shipments & product_shipments = inventory_item->second;
 
     // Create a stack for all the shipments we will need to remove from our inventory.
-    std::stack<Shipments::iterator> destroy_stack;
+    int number_shipments_removed = 0;
     int amount = quantity;
     for(Shipments::iterator shipment = product_shipments.begin(); shipment != product_shipments.end(); shipment++)
     {
-      //if there is more than enough in the current shipment,
-      //remove the remaining quantity and break out of this loop
-      if(shipment->Quantity > amount)
+      if (amount != 0)
       {
-        shipment->Quantity -= amount;
+        //if there is more than enough in the current shipment,
+        //remove the remaining quantity and break out of this loop
+        if(shipment->Quantity > amount)
+        {
+          shipment->Quantity -= amount;
+          break;
+        }
+
+        number_shipments_removed++;
+        amount -= shipment->Quantity;
+      }
+      else
+      {
         break;
       }
-
-      destroy_stack.push(shipment);
-      amount -= shipment->Quantity;
     }
 
-    if(product_shipments.size() == destroy_stack.size())
+    if (number_shipments_removed > 0)
     {
-      //If there are no more shipments of this item, remove it from the inventory
-      _inventory.erase(upitr);
-    }
-    else
-    {
-      // Erase all of the removed shipments
-      while(!destroy_stack.empty())
+      // Remove the shipments requested.
+      product_shipments.erase(product_shipments.begin(), product_shipments.begin() + number_shipments_removed);
+
+      if(product_shipments.size() == 0)
       {
-        product_shipments.erase(destroy_stack.top());
-        destroy_stack.pop();
+        //If there are no more shipments of this item, remove it from the inventory
+        _inventory.erase(inventory_item);
       }
     }
   }
@@ -100,19 +103,19 @@ namespace cs3505
     std::stack<Inventory::iterator> erase_stack_ments;
 
     //Check each different item type in the inventory
-    for(Inventory::iterator itr = _inventory.begin(); itr != _inventory.end(); ++itr)
+    for(Inventory::iterator inventory = _inventory.begin(); inventory != _inventory.end(); ++inventory)
     {
       //build a stack of expired shipments
-      std::stack<Shipments::iterator> destroy_stack;
+      int number_shipments_expired = 0;
 
-      Shipments & shipments = itr->second;
+      Shipments & shipments = inventory->second;
 
-      for (Shipments::iterator it = shipments.begin(); it != shipments.end(); ++it)
+      for (Shipments::iterator shipment = shipments.begin(); shipment != shipments.end(); ++shipment)
       {
-        if (it->Expiration < date)
+        if (date >= shipment->Expiration)
         {
           //add the iterator at this position to stack of shipments to be destroyed
-          destroy_stack.push(it);
+          number_shipments_expired++;
         }
         else
         {
@@ -123,16 +126,14 @@ namespace cs3505
         }
       }
 
-      //erase all of the expired shipments
-      while(!destroy_stack.empty())
+      if (number_shipments_expired > 0)
       {
-        shipments.erase(destroy_stack.top());
+        shipments.erase(shipments.begin(), shipments.begin() + number_shipments_expired);
 
         if(shipments.size() == 0)
         {
-          erase_stack_ments.push(itr);
+          erase_stack_ments.push(inventory);
         }
-        destroy_stack.pop();
       }
     }
 
@@ -140,7 +141,6 @@ namespace cs3505
     while(!erase_stack_ments.empty())
     {
       _inventory.erase(erase_stack_ments.top());
-
       erase_stack_ments.pop();
     }
 

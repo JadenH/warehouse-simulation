@@ -64,7 +64,7 @@ int main(int argc, char ** argv)
       // substring and get the full name.
       int name_pos = line.find(words[11]);
       // Insert the product into the products map.
-      products.insert(make_pair(words[4], Product(words[4], atoi(words[7].c_str()), line.substr(name_pos))));
+      products.insert(make_pair(words[4], Product(words[4], atoi(words[8].c_str()), line.substr(name_pos))));
     }
     else if (!line.find("Request"))
     {
@@ -128,6 +128,8 @@ void UnstockedProducts(Warehouses warehouses, Products products)
   for (Warehouses::iterator warehouse = warehouses.begin(); warehouse != warehouses.end(); ++warehouse)
   {
     Inventory inventory = warehouse->second.Get_Inventory();
+
+    // Iterate through each item in the inventory and remove it from our complete list of upcs.
     for (Inventory::iterator items = inventory.begin(); items != inventory.end(); items++)
     {
       set<string>::iterator item = upcs.find(items->first);

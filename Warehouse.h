@@ -22,7 +22,7 @@ namespace cs3505
       Warehouse(const std::string name);
       ~Warehouse();
 
-      void ReceiveShipment(const std::string upc, const Shipment & shipment);
+      void ReceiveShipment(const std::string upc, Shipment shipment);
       void RequestShipment(const std::string upc, const int quantity);
       void RemoveExpired(int date);
 

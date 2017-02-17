@@ -25,7 +25,7 @@ class Warehouse
 		void RequestShipment(const std::string upc, const int quantity);
 		void RemoveExpired(int date);
 
-    	Inventory Get_Inventory() const;
+  	Inventory Get_Inventory() const;
 
 		std::string Name;
 

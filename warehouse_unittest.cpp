@@ -26,6 +26,7 @@ TEST(Test_Constructor, Properly_Assigns_Name) {
 
 // +++++++++++++++++++ Test Functionality ++++++++++++++++++++++++++
 
+// Test adding a shipment to a warehouse inventory.
 TEST(Test_Functionality, Add_Shipment) {
   Warehouse some_warehouse("Utah");
   Shipment s(5, 10);
@@ -38,6 +39,34 @@ TEST(Test_Functionality, Add_Shipment) {
   EXPECT_EQ(10, shipments.front().Quantity);
 }
 
+// Check that requesting all the quanitity removes the product
+// from the warehouse inventory.
+TEST(Test_Functionality, Request_Shipment_Removed) {
+  Warehouse some_warehouse("Utah");
+  Shipment s(5, 10);
+  some_warehouse.ReceiveShipment("000000", s);
+  some_warehouse.RequestShipment("000000", 10);
+
+  Inventory shipments = some_warehouse.Get_Inventory();
+
+  EXPECT_EQ(0, shipments.size());
+}
+
+// Check that removing some quantity does not remove the entire shipment.
+TEST(Test_Functionality, Request_Shipment) {
+  Warehouse some_warehouse("Utah");
+  Shipment s(5, 10);
+  some_warehouse.ReceiveShipment("000000", s);
+  some_warehouse.RequestShipment("000000", 5);
+
+  Inventory shipments = some_warehouse.Get_Inventory();
+  Shipments product_shipments = some_warehouse.Get_Inventory().find("000000")->second;
+
+  EXPECT_EQ(1, shipments.size());
+  EXPECT_EQ(5, product_shipments.front().Expiration);
+  EXPECT_EQ(5, product_shipments.front().Quantity);
+}
+
 //Ensure that expired shipments are fully removed from an inventory
 TEST(Test_Functionality, Expired_Removal)
 {
@@ -48,7 +77,7 @@ TEST(Test_Functionality, Expired_Removal)
 
 	test_warehouse.RemoveExpired(100);
 
-	EXPECT_EQ(test_warehouse.Get_Inventory().size(), 0);
+	EXPECT_EQ(0, test_warehouse.Get_Inventory().size());
 }
 
 //Ensure that expired shipments are fully removed from an inventory
@@ -64,8 +93,8 @@ TEST(Test_Functionality, Expired_Removal_2)
 
 	test_warehouse.RemoveExpired(3);
 
-	EXPECT_EQ(test_warehouse.Get_Inventory().size(), 1);
-	EXPECT_EQ(test_warehouse.Get_Inventory().find("0237")->second.size(), 1);
+	EXPECT_EQ(1, test_warehouse.Get_Inventory().size());
+	EXPECT_EQ(1, test_warehouse.Get_Inventory().find("0237")->second.size());
 }
 
 // +++++++++++++++++++ Test DateTime +++++++++++++++++++

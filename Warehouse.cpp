@@ -40,54 +40,47 @@ void Warehouse::ReceiveShipment(const std::string upc, const Shipment & shipment
 
 void Warehouse::RequestShipment(const std::string upc, const int quantity)
 {
-  
+
   Inventory::iterator upitr = _inventory.find(upc);
 
+  // Check that we were able to find the product, if not return early.
   if(upitr == _inventory.end())
   {
     return;
   }
 
-  Shipments& upc_ship = _inventory.find(upc)->second;
-
-
-  int remaining = quantity;
+  Shipments & product_shipments = upitr->second;
 
   std::stack<Shipments::iterator> destroy_stack;
-  
-  for(Shipments::iterator it = upc_ship.begin(); it != upc_ship.end(); ++it)
+  int amount = quantity;
+  for(Shipments::iterator shipment = product_shipments.begin(); shipment != product_shipments.end(); shipment++)
   {
     //if there is more than enough in the current shipment,
     //remove the remaining quantity and break out of this loop
-    if(it->Quantity > remaining)
+    if(shipment->Quantity > amount)
     {
-      it->Quantity -= remaining;
+      shipment->Quantity -= amount;
       break;
     }
 
-    destroy_stack.push(it);
-
+    destroy_stack.push(shipment);
+    amount -= shipment->Quantity;
   }
 
-  //erase all of the removed shipments
-  while(!destroy_stack.empty())
+  if(product_shipments.size() == destroy_stack.size())
   {
-    upc_ship.erase(destroy_stack.top());
-    destroy_stack.pop();
-
-    if(upc_ship.size() == 0)
+    //If there are no more shipments of this item, remove it from the inventory
+    _inventory.erase(upitr);
+  }
+  else
+  {
+    // Erase all of the removed shipments
+    while(!destroy_stack.empty())
     {
-      std::cout << "Removing empty item from warehouse" << std::endl;
-      //If there are no more shipments of this item, remove it from the inventory
-      _inventory.erase(upitr);
+      product_shipments.erase(destroy_stack.top());
+      destroy_stack.pop();
     }
   }
-  /*if (it != _inventory.end())
-  {
-    // TODO: Need to figure out how to do this properly.
-    // RemoveExpired(*(it->second));
-    //TODO: Check if expired & remove up to quantity amount.
-  }*/
 }
 
 /* Finds the shipments for a given product by upc.
